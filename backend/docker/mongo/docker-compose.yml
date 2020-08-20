@@ -1,0 +1,13 @@
+version: '2'
+services:
+  mongodb:
+    image: mongo:3.6.17
+    ports:
+      - '27017:27017'
+    command: --smallfiles
+    environment:
+      - MONGO_INITDB_DATABASE=fleet-manager
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=example
+    volumes:
+      - ./volume/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
