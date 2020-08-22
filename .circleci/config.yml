@@ -2,7 +2,7 @@ version: 2
 jobs:
   build_fleet_manager_service:
     docker:
-      - image: cicleci/openjdk:11-jdk
+      - image: circleci/openjdk:11-jdk
 
     working_directory: ~/repo
 
