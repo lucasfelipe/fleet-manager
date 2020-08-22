@@ -12,3 +12,8 @@ jobs:
         
     steps:
       - run : cd backend/ && mvn clean package
+workflows:
+  version: 2
+  fleet_manager:
+    jobs:
+    - build_fleet_manager_service
