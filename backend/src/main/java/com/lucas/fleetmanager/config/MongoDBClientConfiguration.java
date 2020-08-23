@@ -2,21 +2,20 @@ package com.lucas.fleetmanager.config;
 
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
 import lombok.extern.log4j.Log4j2;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.mongodb.config.AbstractMongoClientConfiguration;
+import org.springframework.stereotype.Component;
 
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
 @Log4j2
-@Configuration
-public class MongoDBClientConfiguration {
+@Component
+public class MongoDBClientConfiguration extends AbstractMongoClientConfiguration {
 
     @Value("${mongodb.host}")
     private String mongoHost;
@@ -34,14 +33,14 @@ public class MongoDBClientConfiguration {
     private String mongoPassword;
 
 
-    @Bean
-    public MongoClient mongoClient() {
+    @Override
+    protected MongoClientSettings mongoClientSettings() {
         CodecRegistry pojoCodecRegistry = fromProviders(PojoCodecProvider.builder().automatic(true).build());
         CodecRegistry codecRegistry = fromRegistries(MongoClientSettings.getDefaultCodecRegistry(), pojoCodecRegistry);
-        return MongoClients.create(MongoClientSettings.builder()
+        return MongoClientSettings.builder()
                 .applyConnectionString(new ConnectionString(getMongoURLString()))
                 .codecRegistry(codecRegistry)
-                .build());
+                .build();
     }
 
     private String getMongoURLString() {
@@ -58,5 +57,8 @@ public class MongoDBClientConfiguration {
                 .concat(databaseName);
     }
 
-
+    @Override
+    protected String getDatabaseName() {
+        return databaseName;
+    }
 }

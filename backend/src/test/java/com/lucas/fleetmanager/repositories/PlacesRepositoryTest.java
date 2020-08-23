@@ -1,7 +1,10 @@
 package com.lucas.fleetmanager.repositories;
 
+import com.lucas.fleetmanager.config.MongoDBConfigurationTest;
 import com.lucas.fleetmanager.entities.Places;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -34,6 +37,11 @@ class PlacesRepositoryTest {
         this.repository = repository;
     }
 
+    @BeforeAll
+    static void setupConnection() {
+        MongoDBConfigurationTest.startMongoClient();
+    }
+
     @BeforeEach
     void setup() {
         repository.save(busStation);
@@ -55,6 +63,11 @@ class PlacesRepositoryTest {
     @AfterEach
     void tearDown() {
         repository.delete(busStation);
+    }
+
+    @AfterAll
+    static void closeConnection() {
+        MongoDBConfigurationTest.stopMongod();
     }
 
 }
