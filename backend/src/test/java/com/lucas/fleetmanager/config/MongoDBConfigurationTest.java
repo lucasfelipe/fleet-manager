@@ -45,13 +45,11 @@ public class MongoDBConfigurationTest {
 
     public static void startMongod() {
         try {
-            if (Objects.isNull(mongod)) {
-                MongodStarter starter = MongodStarter.getDefaultInstance();
-                IMongodConfig mongodConfig;
-                mongodConfig = new MongodConfigBuilder().version(Version.Main.V3_6)
-                        .net(new Net(MONGO_DB_URL, MONGO_DB_PORT, Network.localhostIsIPv6())).build();
-                mongodExe = starter.prepare(mongodConfig);
-            }
+            MongodStarter starter = MongodStarter.getDefaultInstance();
+            IMongodConfig mongodConfig;
+            mongodConfig = new MongodConfigBuilder().version(Version.Main.V3_6)
+                    .net(new Net(MONGO_DB_URL, MONGO_DB_PORT, Network.localhostIsIPv6())).build();
+            mongodExe = starter.prepare(mongodConfig);
             mongod = mongodExe.start();
         } catch (IOException e) {
             log.error("Error when trying to create embedded mongodb: {}", e.getMessage(), e);
@@ -63,8 +61,6 @@ public class MongoDBConfigurationTest {
         if (Objects.nonNull(mongod)) {
             mongod.stop();
             mongodExe.stop();
-            mongo.close();
-            mongo = null;
         }
     }
 
