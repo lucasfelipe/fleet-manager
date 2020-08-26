@@ -1,0 +1,17 @@
+:root {
+    
+}
+
+/* Grid Layout */
+.app {
+    margin: 0px;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    grid-template-areas: "content";
+    height: 100vh;
+}
+
+main.content {
+    grid-area: content;
+}
